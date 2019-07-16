@@ -102,7 +102,9 @@
   _.uniq = function(array, isSorted, iterator) {
     let resultsArr = [];
     let finalArr = [];
-    iterator = iterator || _.identity;
+    if (iterator === undefined) {
+      iterator = _.identity;
+    }
     for (let i = 0; i < array.length; i++) {
       let iteratorValue = iterator(array[i]);
       if (_.indexOf(resultsArr, iteratorValue) === -1) {
@@ -120,6 +122,19 @@
     // map() is a useful primitive iteration function that works a lot
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
+    var resultsArr = [];
+    
+    var iteratee = iterator;
+
+    if (iterator === undefined) {
+      iteratee = _.identity;
+    }
+
+    for (var i = 0; i < collection.length; i++) {
+      resultsArr.push(iteratee(collection[i]));
+    }
+
+    return resultsArr;
   };
 
   /*
@@ -161,6 +176,18 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
+ 
+    var accumulatorExists;      
+
+    if (accumulator === undefined) {
+      accumulatorExists = false;
+    }
+
+    _.each(collection, function (val) {
+      accumulator = iterator(accumulator, val);
+      return accumulator;});
+    
+    return accumulator;
   };
 
   // Determine if the array or object contains a given value (using `===`).
@@ -278,6 +305,7 @@
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+     console.log(array);
   };
 
 
