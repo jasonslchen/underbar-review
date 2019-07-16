@@ -177,15 +177,28 @@
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
  
-    var accumulatorExists;      
+    var accumulatorExists = true;      
 
     if (accumulator === undefined) {
       accumulatorExists = false;
+      if (Array.isArray(collection)) {
+         accumulator = collection[0];
+      } else {
+         accumulator = collection[Object.keys(collection)[0]];
+      }
     }
 
     _.each(collection, function (val) {
-      accumulator = iterator(accumulator, val);
-      return accumulator;});
+
+      if (!accumulatorExists) {
+        accumulatorExists = true;
+        return accumulator;
+      } else {
+
+        accumulator = iterator(accumulator, val);
+      }
+      return accumulator;
+    });
     
     return accumulator;
   };
