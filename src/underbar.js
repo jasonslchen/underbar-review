@@ -38,7 +38,7 @@
   // Like first, but for the last elements. If n is undefined, return just the
   // last element.
   _.last = function(array, n) {
-     return n === undefined ? array[array.length - 1] : array.slice(Math.max(0, array.length-n));
+    return n === undefined ? array[array.length - 1] : array.slice(Math.max(0, array.length - n));
   };
 
   // Call iterator(value, key, collection) for each element of collection.
@@ -55,7 +55,7 @@
     } else if (typeof collection === 'object') {
       for (let key in collection) {
         iterator(collection[key], key, collection);
-    }
+      }
     }
 
 
@@ -63,7 +63,7 @@
 
   // Returns the index at which value can be found in the array, or -1 if value
   // is not present in the array.
-  _.indexOf = function(array, target){
+  _.indexOf = function(array, target) {
     // TIP: Here's an example of a function that needs to iterate, which we've
     // implemented for you. Instead of using a standard `for` loop, though,
     // it uses the iteration helper `each`, which you will need to write.
@@ -94,8 +94,8 @@
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
     return _.filter(collection, function(val) {
-       return !test(val);
-    })
+      return !test(val);
+    });
   };
 
   // Produce a duplicate-free version of the array.
@@ -182,9 +182,9 @@
     if (accumulator === undefined) {
       accumulatorExists = false;
       if (Array.isArray(collection)) {
-         accumulator = collection[0];
+        accumulator = collection[0];
       } else {
-         accumulator = collection[Object.keys(collection)[0]];
+        accumulator = collection[Object.keys(collection)[0]];
       }
     }
 
@@ -224,12 +224,12 @@
          
       if (acc) {
         if (iterator(val)) {
-           return true;
-         }
+          return true;
+        }
         return false;      
       }  
       return false;
-    }, true)
+    }, true);
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
@@ -238,9 +238,9 @@
     // TIP: There's a very clever way to re-use every() here.
     iterator = iterator || _.identity;
 
-    return  !_.every(collection, function(val) {
+    return !_.every(collection, function(val) {
       return !iterator(val);
-   })
+    });
   };
 
 
@@ -330,9 +330,9 @@
     return function() {
       let args = JSON.stringify(arguments);
       if (!storage[args]) {
-       storage[args] = func.apply(this, arguments);
-     }    
-       return storage[args]; 
+        storage[args] = func.apply(this, arguments);
+      }    
+      return storage[args]; 
     };
    
   };
@@ -345,8 +345,10 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
-
-    
+    var args = Array.prototype.slice.call(arguments, 2);
+    setTimeout(function() {
+      func.apply(this, args);
+    }, wait);
   };
 
 
@@ -361,7 +363,21 @@
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
-     console.log(array);
+    let copyArray = array.slice();
+    let shuffledArray = [];
+
+    var remainingLength = copyArray.length;
+    var originalLength = copyArray.length;  
+  
+    for (var i = 0; i < originalLength; i++) {
+      var index = Math.floor(Math.random() * remainingLength);
+      shuffledArray.push(copyArray[index]);
+
+      copyArray.splice(index, 1);
+      remainingLength--;
+    }
+    
+    return shuffledArray;
   };
 
 
